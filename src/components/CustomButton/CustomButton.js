@@ -24,10 +24,15 @@ const styles = StyleSheet.create({
     container_TERTIARY: {
        
     },
-    container_EXTRA: {
+    container_EXTRA1: {
         width: '100%',
         backgroundColor: '#ffc600',
-        marginTop: 55,
+        marginTop: 15,
+    },
+    container_EXTRA2: {
+        width: '100%',
+        backgroundColor: '#ffc600',
+        marginTop: 20,
     },
     text: {
         fontFamily: 'PingFangHK-Medium',

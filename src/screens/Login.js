@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Text, View, Image, StyleSheet, useWindowDimensions } from 'react-native';
-import Logo from '../../assets/logo.png';
+import Logo from '../../../assets/logo.png';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 
@@ -16,6 +16,7 @@ const Login = ( {navigation} ) => {
   };
 
   const onForgotPasswordPressed = () => {
+    console.warn("it's okay!");
     navigation.navigate('ForgotPassword')
   };
 
@@ -68,7 +69,7 @@ const Login = ( {navigation} ) => {
         text="Don't have an account? Signup" 
         navigation={navigation} 
         onPress={onSignupPressed} 
-        type="EXTRA"
+        type="EXTRA1"
       />
     </View>
   );
