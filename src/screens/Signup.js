@@ -1,27 +1,68 @@
-import React, {useState} from 'react';
-import { Text, View, Image, StyleSheet, useWindowDimensions, ScrollView } from 'react-native';
-import Logo from '../../../assets/logo.png';
-import CustomInput from '../components/CustomInput';
+import React, { Component} from 'react';
+import { Text, View, Image, StyleSheet, TextInput, Button } from 'react-native';
+import Logo from '../../assets/logo.png';
 import CustomButton from '../components/CustomButton';
+import jwt from "jwt-decode";
 
-const Signup = ( {navigation} ) => {
-  const [name, setname] = useState('');
-  const [email, setemail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordRepeat, setPasswordRepeat] = useState('');
 
-  const {height} = useWindowDimensions();
+global.password = '';
+global.userId = -1;
+export default class Login extends Component {
 
-  const onSignupPressed = () => {
-    navigation.navigate('Login') 
-  };
+  constructor() 
+  {
+    super()
+    this.state = 
+    {
+       message: ' ',
+       email: '',
+       emailError: '',
+       password: '',
+       confirmPass: '',
+       length: '',
+       passwordError: '',
+    }
+  }
 
-  return (
-  <ScrollView contentContainerStyle={{flex:1}}>
-    <View style={styles.root}>
+  emailValidator() {
+    let email_regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if(this.state.email == "") {
+      this.setState({emailError: "Email is required"})
+    }
+
+    else if(email_regex.test(this.state.email) == false) {
+      this.setState({emailError: "Email is invalid"})
+    }
+
+    else {
+      this.setState({emailError: ""})
+    }
+  }
+
+  passwordValidator() {
+    if(this.state.password == "") {
+      this.setState({passwordError: "Password is required"})
+    }
+
+    else if(this.state.password.length < 6) {
+      this.setState({passwordError: "Password must be at least 6 characters"})
+    }
+
+    else if(this.state.confirmPass !== this.state.password) {
+      this.setState({passwordError: "Passwords must be equal"})
+    }
+  
+    else {
+      this.setState({passwordError: ""})
+    }
+  }
+
+  render() {
+    return (
+      <View style={styles.root}>
       <Image
         source={Logo}
-        style={[styles.logo, {height: height * 0.2}]}
+        style={styles.logo}
         resizeMode="contain" //makes sure whole logo is visible
       />
 
@@ -32,54 +73,120 @@ const Signup = ( {navigation} ) => {
       <Text style={styles.login}>
         SIGNUP
       </Text>
-      
-      <Text style={styles.text}>Name</Text>
-      <CustomInput 
-      placeholder='Name' 
-      value={name} 
-      setValue={setname} 
-      />
 
-      <Text style={styles.text}>Email</Text>
-      <CustomInput 
-      placeholder='Email' 
-      value={email} 
-      setValue={setemail}
-      />
+      <Text style={styles.emailText}>Email</Text>
+      <View style={styles.container}>
+      <TextInput
+          placeholder='Email'
+          onChangeText={((val) => { this.changeLoginNameHandler(val) }, (val) => this.setState({email: val}))}
+          autoCapitalize="none"
+          autoCorrect={false}
+          onBlur={() => this.emailValidator()}
+        />
+      </View>
+      <Text style={{color: 'red', /*right: 115 */}}>{this.state.emailError}</Text>
 
+      {/*must be at least 6 char*/}
       <Text style={styles.passwordText}>Password</Text>
-      <CustomInput 
-      placeholder='Password'
-      value={password} 
-      setValue={setPassword}
-      secureTextEntry
-      />
+      <View style={styles.container}>
+        <TextInput 
+          placeholder='Password'
+          secureTextEntry={true}
+          onChangeText={((val) => { this.changePasswordHandler(val) }, (val) => this.setState({password: val}))}
+          autoCapitalize="none"
+          autoCorrect={false}
+          minLength={6}
+          onBlur={() => this.passwordValidator()}
+        />
+      </View>
+      <Text style={{color: 'red'}}>{this.state.passwordError}</Text>
 
       <Text style={styles.confirmPassText}>Confirm Password</Text>
-      <CustomInput 
-      placeholder='Confirm Password'
-      value={passwordRepeat} 
-      setValue={setPasswordRepeat}
-      secureTextEntry
-      />
-    
-      <CustomButton 
+      <View style={styles.container}>
+        <TextInput 
+          placeholder='Confirm Password'
+          secureTextEntry={true}
+          autoCapitalize="none"
+          onChangeText={((val) => this.setState({password: val}), (val) => this.setState({confirmPass: val}))}
+          autoCorrect={false}
+          keyboardType="email-address"
+          minLength={6}
+          onBlur={() => this.passwordValidator()}
+        />
+      </View>
+      <Text style={{color: 'red', /*right: 100 */}}>{this.state.passwordError}</Text>
+      
+      {/*<CustomButton 
         text="SIGNUP" 
-        navigation={navigation} 
-        onPress={onSignupPressed} 
-      />
-      <CustomButton //move button up
-        text="Already have an account? Login" 
-        navigation={navigation} 
-        onPress={onSignupPressed} 
-        type="EXTRA2"
-      />
-    </View>
-  </ScrollView>
- );
-};
+        //navigation={navigation} 
+        onPress={this.handleClick} 
+    />*/}
 
-const styles = StyleSheet.create({ 
+      <Button
+        title="SIGNUP"
+        onPress={this.handleClick}
+    />
+  
+      <CustomButton 
+        text="Already have an account? Login" 
+        //navigation={navigation} 
+        onPress={this.handleLoginButton} 
+        type="EXTRA1"
+      />
+
+
+    </View>
+    );
+  }
+
+  handleClick = async () =>
+  {
+    try
+    {
+      var obj = {email:global.loginName.trim(),password:global.password.trim()};
+      var js = JSON.stringify(obj);
+      const response = await fetch('https://group1-tots-mern.herokuapp.com/api/register', 
+        {
+          method:'POST',
+          body:js,
+          headers:{
+            'Content-Type': 'application/json'
+          }});
+      var res = JSON.parse(await response.text());
+      var data = jwt(res.data);
+      console.log(data);
+
+      if( data.error )
+      {
+        this.setState({message: data.error });
+      }
+      else
+      {
+        global.userId = data.id;
+        this.props.navigation.navigate('EnterCodeSignup');
+      }
+    }
+    catch(e)
+    {
+      this.setState({message: e.message });
+    }
+  }
+
+  handleLoginButton = () => {
+    this.props.navigation.navigate('Login');
+  }
+
+  changeLoginNameHandler = async (val) =>
+  {
+    global.loginName = val;
+  }  
+  changePasswordHandler = async (val) =>
+  {
+    global.password = val;
+  }  
+}
+
+const styles = StyleSheet.create({
   root: {
     flex: 1, 
     backgroundColor: '#fff',
@@ -102,8 +209,8 @@ const styles = StyleSheet.create({
     fontFamily: 'PingFangHK-Regular',
     padding: 10,
   },
-  //will have to test on different devices
-  text: {
+  
+  emailText: {
     right: 150,
     fontFamily: 'PingFangHK-Regular',
   },
@@ -114,7 +221,18 @@ const styles = StyleSheet.create({
   confirmPassText: {
     right: 110,
     fontFamily: 'PingFangHK-Regular',
-  }
-});
+  },
+  container: {
+    backgroundColor: 'white',
+    width: '100%', //100% of the parent component
 
-export default Signup
+    borderColor: '#FFC904',
+    borderWidth: 1,
+    borderRadius: 15,
+    borderStyle: 'solid',
+
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginVertical: 10,
+  }
+})

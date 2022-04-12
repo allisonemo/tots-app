@@ -21,6 +21,18 @@ const styles = StyleSheet.create({
     container_PRIMARY: {
         backgroundColor: '#FFC904',
     },
+    container_SECONDARY: {
+        alignItems: 'center',
+        //justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: 'black',
+        flexDirection: "row" ,
+        marginLeft: 20, 
+        justifyContent: 'space-evenly'
+    },
     container_TERTIARY: {
        
     },
@@ -37,6 +49,13 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'PingFangHK-Medium',
         fontSize: 14,
+    },
+    text_SECONDARY: {
+        fontSize: 16,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: '#FFC904',
     },
     text_TERTIARY: {
         textDecorationLine: 'underline',

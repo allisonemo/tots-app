@@ -13,20 +13,51 @@
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "@react-navigation/stack": "^6.1.1",
+    "axios": "^0.26.1",
     "expo": "~44.0.0",
     "expo-status-bar": "~1.2.0",
+    "express": "^4.17.3",
+    "flatlist-react": "^1.5.0",
+    "formik": "^2.2.9",
+    "git": "^0.1.5",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
+    "nodemon": "^2.0.15",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-hook-form": "^7.28.1",
     "react-native": "0.64.3",
+    "react-native-form-validator": "^0.5.1",
     "react-native-gesture-handler": "^2.1.0",
+    "react-native-multiple-select": "^0.5.7",
+    "react-native-multiple-select-list": "^1.0.4",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
+    "react-native-sectioned-multi-select": "^0.9.1",
+    "react-native-select-dropdown": "^1.8.0",
+    "react-native-select-multiple": "^2.1.0",
     "react-native-splash-screen": "^3.3.0",
+    "react-native-tag-select": "^2.0.0",
+    "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
-    "react-navigation-stack": "^2.10.4"
+    "react-navigation-stack": "^2.10.4",
+    "validator": "^13.7.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "jest": "^27.5.1"
   },
-  "private": true
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allisonemo/tots-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allisonemo/tots-app/issues"
+  },
+  "homepage": "https://github.com/allisonemo/tots-app#readme",
+  "description": ""
 }

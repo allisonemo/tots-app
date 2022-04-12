@@ -1,17 +1,31 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import React from 'react'
+import { Controller } from 'react-hook-form'
 
-const CustomInput = ({value, setValue, placeholder, secureTextEntry}) => {
+const CustomInput = ({ control, name, rules = {}, placeholder, secureTextEntry }) => {
   return (
-    <View style={styles.container}>
-      <TextInput  
-      value={value}
-      onChangeText={setValue} //will update value with new text
-      placeholder={placeholder} 
-      style={styles.input}
-      secureTextEntry={secureTextEntry}
+      <Controller  
+        control={control}  //connects text input with form
+        name={name}
+        rules={rules}
+        render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+        <>
+        <View style={[styles.container, {borderColor: error ? 'red' : '#FFC904'}]}>
+          <TextInput 
+          value={value}
+          //onChangeText={onChange}
+          onBlur={onBlur}
+          placeholder={placeholder}
+          style={[styles.input, {}]}
+          secureTextEntry={secureTextEntry}
+          autoCapitalize="none"
+          autoCorrect={false}
+           />
+        </View>
+        {error && <Text style={{color: 'red', alignSelf: 'stretch'}}>{error.message || 'Error'}</Text>}
+        </>
+        )}
       />
-    </View>
   )
 }
 const styles = StyleSheet.create({ 

@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     color: '#FFC903', 
     fontSize: 30, 
     fontFamily: 'PingFangHK-Semibold',
+    marginBottom: 30,
   },
   button: {
     alignItems: 'center',

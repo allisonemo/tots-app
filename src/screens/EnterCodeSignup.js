@@ -1,67 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Alert } from 'react-native'
 import CustomButton from '../components/CustomButton';
 import React, { Component } from 'react'
-import jwt_decode from "jwt-decode";
-
-/*const EnterCode = ( {navigation} ) => {
-
-  const [text, onChangeText] = React.useState("");
-
-  const onSubmitPressed = () => {
-    navigation.navigate('Reset Password')
-  };
-
-
-  return (
-  <ScrollView contentContainerStyle={{flex:1}}>
-    <View style={styles.root}>
-      <Text style={styles.title}>Enter the 4 digit code you recieved in your email</Text>
-      <TextInput
-        style={styles.textInput} 
-        maxLength={4} 
-        onChangeText={onChangeText}
-        value={text} >
-      </TextInput>
-      <CustomButton 
-        text="SUBMIT" 
-        navigation={navigation} 
-        onPress={onSubmitPressed} 
-        type="EXTRA1"
-      />
-    </View>
-  </ScrollView>
-  )
-};
-
-const styles = StyleSheet.create({ 
-  root: {
-    flex: 1, 
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    padding: 15,
-  },
-  title: {
-    color: 'black',
-    fontSize: 25,
-    fontFamily: 'PingFangHK-Semibold',
-    marginTop: 15,
-  },
-  textInput: {
-    height: 40,
-    width: 58,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-});
-
-
-export default EnterCode*/ 
-
+import jwt from "jwt-decode";
 
 global.code='';
 global.userId = -1;
-export default class EnterCode extends Component {
+export default class EnterCodeSignup extends Component {
   constructor() 
   {
     super()
@@ -70,16 +14,18 @@ export default class EnterCode extends Component {
        message: ' '
     }
   }
+
   render() {
     return (
       <View style={styles.root}>
       <Text style={styles.title}>Enter the 4 digit code you recieved in your email</Text>
-      <TextInput
+      <TextInput 
         style={styles.textInput} 
         maxLength={4} 
         onChangeText={(val) => { this.changeCodeHandler(val) }}
         autoCorrect={false}
-        value={text} >
+        //value={text} 
+        >
       </TextInput>
       <CustomButton 
         text="SUBMIT" 
@@ -87,10 +33,10 @@ export default class EnterCode extends Component {
         type="EXTRA1"
       />
     </View>
-    )
+    );
   }
 
-  handleClick = async () => 
+  handleClick = async () =>
   {
     try
     {
@@ -108,7 +54,8 @@ export default class EnterCode extends Component {
       else
       {
         global.userId = res.id;
-        this.props.navigation.navigate('ResetPassword');
+        this.props.navigation.navigate('Login');
+        Alert.alert("You are now able to successfully login");
       }
     }
     catch(e)
@@ -116,12 +63,11 @@ export default class EnterCode extends Component {
       this.setState({message: e.message });
     }
   }
-
+ 
   changeCodeHandler = async (val) =>
   {
     global.code = val;
   }
-
 }
 
 const styles = StyleSheet.create({
